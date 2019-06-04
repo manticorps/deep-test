@@ -34,13 +34,17 @@ public class Main {
         for (int i = 0; i < Constants.MODEL_SIZE; i++) {
             List<Node> copyNodes = copyNode(nodes);
 
-            OutageSimulator outageSimulator = new OutageSimulator(copyNodes);
-            int changedNode = outageSimulator.changeNetwork();
-            if (changedNode == -1) {
-                continue;
-            }
+            if (i % 4 == 0) {
+                datasetGenerator.writeStatus(copyNodes, 0);
+            } else {
+                OutageSimulator outageSimulator = new OutageSimulator(copyNodes);
+                int changedNode = outageSimulator.changeNetwork();
+                if (changedNode == -1) {
+                    continue;
+                }
 
-            datasetGenerator.writeStatus(copyNodes, changedNode - 1);
+                datasetGenerator.writeStatus(copyNodes, changedNode);
+            }
         }
 
         datasetGenerator.save();

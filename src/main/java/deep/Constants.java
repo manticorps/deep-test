@@ -15,4 +15,5 @@ public class Constants {
     
     public static final int MODEL_SIZE = 10000;
     public static final int NODES = 2;
+    public static final int CLASS = 3;
 }

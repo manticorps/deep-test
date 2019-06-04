@@ -24,6 +24,8 @@ public class DatasetGenerator {
 
         StringBuilder sb = new StringBuilder();
         boolean firstLine = true;
+        boolean hasOutage = nodes.stream().anyMatch(node -> !node.isUp());
+
         for (Node node : nodes) {
             if (firstLine) {
                 firstLine = false;
@@ -33,10 +35,15 @@ public class DatasetGenerator {
 
             String value = node.isUp() ? "0" : "1";
             sb.append(value);
-
         }
+
         sb.append(",");
-        sb.append(problem);
+
+        if (hasOutage) {
+            sb.append(problem);
+        } else {
+            sb.append("0");
+        }
 
         fileOutputStream.write(sb.toString());
         fileOutputStream.write("\n");

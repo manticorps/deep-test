@@ -48,7 +48,7 @@ public class DeepTest implements OutageListener {
         DataSet testData = testAndTrain.getTest();
 
         normalize(trainingData, testData);
-        
+
 //        int hiddenNodes = MODEL_SIZE / (5 * (NODES + NODES));
         int hiddenNodes = 5;
         System.out.println("Usage of [" + hiddenNodes + "] hiddens nodes");
@@ -59,8 +59,8 @@ public class DeepTest implements OutageListener {
         MultiLayerConfiguration configuration
             = new NeuralNetConfiguration.Builder()
             .seed(123)
-            .activation(Activation.TANH)
-            .weightInit(WeightInit.ZERO)
+            .activation(Activation.RELU)
+            .weightInit(WeightInit.XAVIER)
             .updater(new Sgd(0.1))
             .l2(1e-4)
             .updater(new AdaGrad(learningRate, 0.9))
@@ -80,7 +80,7 @@ public class DeepTest implements OutageListener {
                 LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
                 .activation(Activation.SOFTMAX)
                 .nIn(NODES)
-                .nOut(NODES)
+                .nOut(CLASS)
                 .build())
             .build();
 
@@ -98,7 +98,7 @@ public class DeepTest implements OutageListener {
 
     private void evaluate(final MultiLayerNetwork model, final DataSet testData) {
 
-        Evaluation eval = new Evaluation(NODES);
+        Evaluation eval = new Evaluation(CLASS);
         INDArray output = model.output(testData.getFeatures());
         eval.eval(testData.getLabels(), output);
         System.out.println(eval.stats());
@@ -125,7 +125,7 @@ public class DeepTest implements OutageListener {
                 recordReader,
                 MODEL_SIZE,
                 NODES,
-                NODES
+                CLASS
             );
 
             return iterator.next();

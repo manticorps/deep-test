@@ -30,6 +30,8 @@ public class OutageSimulator {
     public int changeNetwork() {
 //        boolean addOutage = RANDOM.nextBoolean();
 //        if (addOutage) {
+
+
             return addNewOutage();
 //        } else {
 //            return resolveOutage();
