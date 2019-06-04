@@ -14,6 +14,6 @@ public class Constants {
     public static final String IA_STATUS_IMAGE = WORKSPACE + "/img/status-ia.svg";
     
     public static final int MODEL_SIZE = 10000;
-    public static final int NODES = 2;
-    public static final int CLASS = 3;
+    public static final int NODES = 20;
+    public static final int CLASS = NODES + 1;
 }

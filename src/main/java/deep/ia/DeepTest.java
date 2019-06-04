@@ -8,6 +8,7 @@ import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
+import org.deeplearning4j.nn.conf.Updater;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;
 import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -49,23 +50,22 @@ public class DeepTest implements OutageListener {
 
         normalize(trainingData, testData);
 
-//        int hiddenNodes = MODEL_SIZE / (5 * (NODES + NODES));
-        int hiddenNodes = 5;
+        int hiddenNodes = MODEL_SIZE / (5 * (NODES + NODES));
+//        int hiddenNodes = 5;
         System.out.println("Usage of [" + hiddenNodes + "] hiddens nodes");
 
         int layer = 0;
-        double learningRate = 0.001;
+        double learningRate = 1;
 
         MultiLayerConfiguration configuration
             = new NeuralNetConfiguration.Builder()
             .seed(123)
             .activation(Activation.RELU)
             .weightInit(WeightInit.XAVIER)
-            .updater(new Sgd(0.1))
-            .l2(1e-4)
-            .updater(new AdaGrad(learningRate, 0.9))
+            .updater(new Sgd(learningRate))
             .list()
             .layer(layer++, new DenseLayer.Builder()
+//                .updater(Updater.SGD)
                 .nIn(NODES)
                 .nOut(hiddenNodes)
                 .build())
@@ -73,13 +73,13 @@ public class DeepTest implements OutageListener {
             .layer(layer++, new DenseLayer
                 .Builder()
                 .nIn(hiddenNodes)
-                .nOut(NODES)
+                .nOut(CLASS)
                 .build())
 
             .layer(layer++, new OutputLayer.Builder(
                 LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
                 .activation(Activation.SOFTMAX)
-                .nIn(NODES)
+                .nIn(CLASS)
                 .nOut(CLASS)
                 .build())
             .build();
@@ -88,7 +88,7 @@ public class DeepTest implements OutageListener {
         addUiServer(model);
         model.init();
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 150; i++) {
             System.out.println("Fit in progress -> iteration [" + i + "]");
             model.fit(trainingData);
         }
