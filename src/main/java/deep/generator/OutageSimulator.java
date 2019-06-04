@@ -83,6 +83,6 @@ public class OutageSimulator {
     private void setOutageRecursive(final Node node) {
         node.setStatus(false);
         listeners.forEach(listener -> listener.onOutage(node.getId()));
-        node.getChilds().forEach(this::setOutageRecursive);
+//        node.getChilds().forEach(this::setOutageRecursive);
     }
 }

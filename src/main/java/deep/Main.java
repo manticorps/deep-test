@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -45,28 +44,23 @@ public class Main {
         }
 
         datasetGenerator.save();
-
         System.out.println("Initialize UI");
 
-
-//
-//        GraphPrinter realStatus = new GraphPrinter(Constants.REAL_STATUS_IMAGE, nodes);
-//        refreshGraph(realStatus);
-////
-//        GraphPrinter iaStatus = new GraphPrinter(Constants.IA_STATUS_IMAGE, copyNodes);
-//        refreshGraph(iaStatus);
-//
-//
-//
-//        new DeepWebServer();
-
+        // Not used until something work.
+        // displayGraphToWebServer();
 
         System.out.println("Create model");
         DeepTest deepTest = new DeepTest();
         deepTest.createModel();
-//
-//        LockSupport.parkNanos(TimeUnit.HOURS.toNanos(1));
     }
+
+//    private static void displayGraphToWebServer() {
+//        GraphPrinter realStatus = new GraphPrinter(Constants.REAL_STATUS_IMAGE, nodes);
+//        refreshGraph(realStatus);
+//        GraphPrinter iaStatus = new GraphPrinter(Constants.IA_STATUS_IMAGE, copyNodes);
+//        refreshGraph(iaStatus);
+//        new DeepWebServer();
+//    }
 
     private static void refreshGraph(final GraphPrinter graphPrinter) {
         ScheduledExecutorService graphDraw = Executors.newSingleThreadScheduledExecutor();
